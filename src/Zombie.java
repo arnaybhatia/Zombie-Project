@@ -1,9 +1,16 @@
 public class Zombie {
-    private String type="base";
-    private int health=100;
-    private int attack=5;
-    private int speed=1;
+    private String type;
+    private int health;
+    private int attack;
+    private int speed;
+    private final String behavior= "You will not survive this fight";
 
+    public Zombie(String type, int health, int attack, int speed){
+        this.type=type;
+        this.health=health;
+        this.attack=attack;
+        this.speed=speed;
+    }
     public int getHealth() {
         return health;
     }
