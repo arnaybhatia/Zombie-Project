@@ -23,10 +23,7 @@ public class Supply {
     public void setType(boolean type) {
         this.type = type;
     }
-// FIGURE THIS OUT LATER
-//    public void use(Supply thing){
-//        if(thing.isType()){
-//
-//        }
-//    }
+    public String toString(){
+        return getName();
+    }
 }

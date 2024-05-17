@@ -26,5 +26,7 @@ public class Zombie {
     public int getSpeed() {
         return speed;
     }
-
+    public String toString(){
+        return type;
+    }
 }
