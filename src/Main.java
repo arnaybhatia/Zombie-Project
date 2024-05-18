@@ -48,6 +48,22 @@ public class Main {
         }
         generateMap(map);
         System.out.println("");
+        System.out.println("Here is your starting map:");
         printMap(map);
+    }
+
+    public static String attackZombie(Player player, Zombie zombie){
+        if(player.getSpeed()>zombie.getSpeed()){
+            zombie.setHealth(zombie.getHealth()-player.getAttackpwr());
+            player.setHealth(player.getHealth()-zombie.getAttack());
+        }
+        else{
+            player.setHealth(player.getHealth()-zombie.getAttack());
+            zombie.setHealth(zombie.getHealth()-player.getAttackpwr());
+        }
+        if(zombie.getHealth()<0){
+            zombie.setHealth(0);
+            return ""
+        }
     }
 }
