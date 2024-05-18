@@ -35,7 +35,19 @@ public class Main {
         }
     }
     public static void main(String[] args) {
+        System.out.println("Generating Map ..........");
+        for(int i=0;i<101;i+=5){
+            System.out.print(i+"% ");
+            try {
+                Thread.sleep(25); // Pause for 5 seconds
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if(i%20==0 && i!=0)
+                System.out.println();
+        }
         generateMap(map);
+        System.out.println("");
         printMap(map);
     }
 }
