@@ -29,13 +29,32 @@ public class Main {
             }
         }
     }
-    public static void printMap(Object[][] map){
-        for(int i =0; i<map.length;i++){
-            System.out.println(Arrays.toString(map[i]));
+    public static void printMap(Object[][] map) {
+        System.out.println();
+        System.out.print("      ");
+        for (int i = 0; i < map[0].length; i++) {
+            System.out.printf("%-15s ", "Col " + i);
+        }
+        System.out.println();
+
+        for (int i = 0; i < map.length; i++) {
+            System.out.print("Row "+i+" ");
+            for (int j = 0; j < map[i].length; j++) {
+                System.out.printf("%-15s ", map[i][j].toString());
+            }
+            System.out.println();
         }
     }
+
     public static void main(String[] args) {
+        int row=0;
+        int col=0;
+        String p1="YOU";
+        String past="Empty";
         System.out.println("Generating Map ..........");
+        Scanner sc=new Scanner(System.in);
+        String input=sc.nextLine();
+        Player player= new Player(input);
         for(int i=0;i<101;i+=5){
             System.out.print(i+"% ");
             try {
@@ -47,23 +66,89 @@ public class Main {
                 System.out.println();
         }
         generateMap(map);
+        System.out.println("Here is how this works. A strong zombie, fast zombie, or supply might be in each cell. You need to navigate from the top-left corner to the bottom-right corner. Capital or lowercase letters don't matter when inputting.");
         System.out.println("");
-        System.out.println("Here is your starting map:");
-        printMap(map);
+        map[0][0]=p1;
+        while(true){
+            printMap(map);
+            System.out.println("You are currently at (" + row + ", " + col + "). What would you like to do? Move (M) or use an item from your inventory(U)?");
+            input=sc.nextLine();
+            if(input.equals("M")){
+                System.out.println("Would you like to move up(u), down(d), left(l), or right(r)?");
+                input=sc.nextLine();
+                if(input.equals("u")){
+                    if(row!=0){
+                        map[row][col]=past;
+                        row--;
+                        map[row][col]=p1;
+                    }
+                    else{
+                        System.out.println("You cannot move up!");
+                    }
+                }
+                else if(input.equals("d")){
+                    if(row!=5){
+                        map[row][col]=past;
+                        row++;
+                        map[row][col]=p1;
+                    }
+                    else{
+                        System.out.println("You cannot move down!");
+                    }
+                }
+                else if(input.equals("l")){
+                    if(col!=0){
+                        map[row][col]=past;
+                        col--;
+                        map[row][col]=p1;
+                    }
+                    else{
+                        System.out.println("You cannot move left!");
+                    }
+                }
+                else if(input.equals("r")){
+                    if(col!=5){
+                        map[row][col]=past;
+                        col++;
+                        map[row][col]=p1;
+                    }
+                }
+            }
+            if(row==5 && col==5){
+                System.out.println("YOU WIN!!!!!!!!!");
+                break;
+            }
+        }
+    }
+
+    public static void doTheThingWhenYouMove(int row,int col, Player player){
+        if(map[row][col] instanceof Zombie){
+            attackZombie(player, (Zombie) map[row][col]);
+        }
     }
 
     public static String attackZombie(Player player, Zombie zombie){
-        if(player.getSpeed()>zombie.getSpeed()){
-            zombie.setHealth(zombie.getHealth()-player.getAttackpwr());
-            player.setHealth(player.getHealth()-zombie.getAttack());
+        if(player.getSpeed() > zombie.getSpeed()) {
+            zombie.setHealth(zombie.getHealth() - player.getAttackpwr());
+            if (zombie.getHealth() > 0) {
+                player.setHealth(player.getHealth() - zombie.getAttack());
+            }
+        } else {
+            player.setHealth(player.getHealth() - zombie.getAttack());
+            if (player.getHealth() > 0) {
+                zombie.setHealth(zombie.getHealth() - player.getAttackpwr());
+            }
         }
-        else{
-            player.setHealth(player.getHealth()-zombie.getAttack());
-            zombie.setHealth(zombie.getHealth()-player.getAttackpwr());
-        }
-        if(zombie.getHealth()<0){
+
+        if(zombie.getHealth() <= 0) {
             zombie.setHealth(0);
-            return ""
+            return "Zombie died. You have " + player.getHealth() + " health left.";
+        } else if (player.getHealth() <= 0) {
+            player.setHealth(0);
+            return "You died. Zombie has " + zombie.getHealth() + " health left.";
         }
+
+        return attackZombie(player, zombie);
     }
+
 }

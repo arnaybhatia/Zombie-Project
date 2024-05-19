@@ -15,6 +15,10 @@ public class Zombie {
         return health;
     }
 
+    public String getBehavior() {
+        return behavior;
+    }
+
     public void setHealth(int health) {
         this.health = health;
     }
