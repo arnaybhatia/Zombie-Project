@@ -52,9 +52,6 @@ public class Main {
         String p1="YOU";
         String past="Empty";
         System.out.println("Generating Map ..........");
-        Scanner sc=new Scanner(System.in);
-        String input=sc.nextLine();
-        Player player= new Player(input);
         for(int i=0;i<101;i+=5){
             System.out.print(i+"% ");
             try {
@@ -66,6 +63,10 @@ public class Main {
                 System.out.println();
         }
         generateMap(map);
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Please input your name:");
+        String input=sc.nextLine();
+        Player player= new Player(input);
         System.out.println("Here is how this works. A strong zombie, fast zombie, or supply might be in each cell. You need to navigate from the top-left corner to the bottom-right corner. Capital or lowercase letters don't matter when inputting.");
         System.out.println("");
         map[0][0]=p1;
@@ -73,46 +74,53 @@ public class Main {
             printMap(map);
             System.out.println("You are currently at (" + row + ", " + col + "). What would you like to do? Move (M) or use an item from your inventory(U)?");
             input=sc.nextLine();
-            if(input.equals("M")){
+            if(input.toLowerCase().equals("m")){
                 System.out.println("Would you like to move up(u), down(d), left(l), or right(r)?");
                 input=sc.nextLine();
-                if(input.equals("u")){
+                if(input.toLowerCase().equals("u")){
                     if(row!=0){
                         map[row][col]=past;
                         row--;
+                        doTheThingWhenYouMove(row,col,player);
                         map[row][col]=p1;
                     }
                     else{
                         System.out.println("You cannot move up!");
                     }
                 }
-                else if(input.equals("d")){
+                else if(input.toLowerCase().equals("d")){
                     if(row!=5){
                         map[row][col]=past;
                         row++;
+                        doTheThingWhenYouMove(row,col,player);
                         map[row][col]=p1;
                     }
                     else{
                         System.out.println("You cannot move down!");
                     }
                 }
-                else if(input.equals("l")){
+                else if(input.toLowerCase().equals("l")){
                     if(col!=0){
                         map[row][col]=past;
                         col--;
+                        doTheThingWhenYouMove(row,col,player);
                         map[row][col]=p1;
                     }
                     else{
                         System.out.println("You cannot move left!");
                     }
                 }
-                else if(input.equals("r")){
+                else if(input.toLowerCase().equals("r")){
                     if(col!=5){
                         map[row][col]=past;
                         col++;
+                        doTheThingWhenYouMove(row,col,player);
                         map[row][col]=p1;
                     }
                 }
+            }
+            else if(input.toLowerCase().equals("u")){
+                System.out.println(player.getInventory());
             }
             if(row==5 && col==5){
                 System.out.println("YOU WIN!!!!!!!!!");
@@ -123,7 +131,18 @@ public class Main {
 
     public static void doTheThingWhenYouMove(int row,int col, Player player){
         if(map[row][col] instanceof Zombie){
-            attackZombie(player, (Zombie) map[row][col]);
+            System.out.println(attackZombie(player, (Zombie) map[row][col]));
+        }
+        if(map[row][col] instanceof Supply){
+            Scanner sc1=new Scanner(System.in);
+            System.out.println("Would you like to store this in your inventory(i) or use it(u)?");
+            String input=sc1.nextLine();
+            if(input.equals("i")){
+                System.out.println(player.addToInv((Supply) map[row][col]));
+            }
+            else if(input.equals("u")){
+                System.out.println(player.use((Supply) map[row][col]));
+            }
         }
     }
 

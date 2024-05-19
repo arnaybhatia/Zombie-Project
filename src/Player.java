@@ -18,6 +18,7 @@ public class Player {
         health=200;
         attackpwr=20;
         speed=20;
+        inventory=new ArrayList<>();
     }
 
     public String getName() {
