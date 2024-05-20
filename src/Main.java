@@ -74,6 +74,10 @@ public class Main {
         System.out.println("");
         map[0][0] = p1; // Place the player at the starting position
         while (true) { // Main game loop
+            if(player.getHealth()<=0){
+                System.out.println("YOU LOST!!!");
+                break;
+            }
             printMap(map); // Print the game map
             System.out.println("You are currently at (" + row + ", " + col + "). What would you like to do? Move (M) or use an item from your inventory(U)?");
             input = sc.nextLine(); // Read player's choice
