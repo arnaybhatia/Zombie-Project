@@ -15,11 +15,11 @@ public class Main {
                 int number = (int) (Math.random() * 101); // Generate a random number between 0 and 100
                 if (map[i][j] == null) { // Check if the current cell is empty
                     if (number <= 20) {
-                        map[i][j] = new Zombie("Zombie", 100, 5, 5); // 20% chance to place a regular zombie
+                        map[i][j] = new Zombie("Zombie", 100, 10, 5); // 20% chance to place a regular zombie
                     } else if (number <= 40) {
-                        map[i][j] = new FastZombie("Fast Zombie", 100, 5, 5); // 20% chance to place a fast zombie
+                        map[i][j] = new FastZombie("Fast Zombie", 100, 10, 5); // 20% chance to place a fast zombie
                     } else if (number <= 60) {
-                        map[i][j] = new StrongZombie("Strong Zombie", 100, 5, 5); // 20% chance to place a strong zombie
+                        map[i][j] = new StrongZombie("Strong Zombie", 100, 10, 5); // 20% chance to place a strong zombie
                     } else if (number <= 80) {
                         map[i][j] = new Supply(true); // 20% chance to place a healing supply
                     } else if (number <= 100) {
