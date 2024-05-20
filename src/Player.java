@@ -1,64 +1,65 @@
-import javax.swing.*;
 import java.util.ArrayList;
 
+// Class representing a player in the game
 public class Player {
-    private String name;
+    private final String name;
     private int health;
-    private final int maxHealth=200;
     private int attackpwr;
-
-    public ArrayList<Supply> getInventory() {
-        return inventory;
-    }
-
     private ArrayList<Supply> inventory;
     private int speed;
+
+    // Constructor to initialize a new player with default values
     public Player(String name) {
         this.name = name;
-        health=200;
-        attackpwr=20;
-        speed=20;
-        inventory=new ArrayList<>();
+        health = 200;
+        attackpwr = 20;
+        speed = 20;
+        inventory = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
-    }
-
+    // Getter for player's health
     public int getHealth() {
         return health;
     }
 
+    // Setter for player's health
     public void setHealth(int health) {
         this.health = health;
     }
 
+    // Getter for player's attack power
     public int getAttackpwr() {
         return attackpwr;
     }
 
-    public void setAttackpwr(int attackpwr) {
-        this.attackpwr = attackpwr;
-    }
-
+    // Getter for player's speed
     public int getSpeed() {
         return speed;
     }
-    public String use(Supply supply){
-        if(supply.isType()){
-            health+=50;
+
+    // Getter for player's inventory
+    public ArrayList<Supply> getInventory() {
+        return inventory;
+    }
+
+    // Method to use a supply item from the inventory
+    public String use(Supply supply) {
+        if (supply.isType()) { // Healing type supply
+            health += 50;
             inventory.remove(supply);
-            if(health>maxHealth)
-                health=maxHealth;
-            return "You have healed 50 health. Your current health is "+health;
-        }
-        else{
-            attackpwr+=5;
+            int maxHealth = 200;
+            if (health > maxHealth)
+                health = maxHealth;
+            return "You have healed 50 health. Your current health is " + health;
+        } else { // Damage type supply
+            attackpwr += 5;
             inventory.remove(supply);
-            return "Your new attack power is "+attackpwr;
+            return "Your new attack power is " + attackpwr;
         }
     }
-    public String addToInv(Supply supply){
+
+    // Method to add a supply item to the inventory
+    public String addToInv(Supply supply) {
         inventory.add(supply);
         return "Added " + supply.getName() + " to inventory";
     }
