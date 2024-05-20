@@ -142,6 +142,7 @@ public class Main {
     // Method to handle actions when a player moves to a new cell
     public static void doTheThingWhenYouMove(int row, int col, Player player) {
         if (map[row][col] instanceof Zombie) { // Check if the cell contains a zombie
+            System.out.println("Zombie: "+ ((Zombie) map[row][col]).getBehavior());
             System.out.println(attackZombie(player, (Zombie) map[row][col])); // Attack the zombie
         }
         if (map[row][col] instanceof Supply) { // Check if the cell contains a supply
@@ -158,7 +159,6 @@ public class Main {
 
     // Method to handle attacking a zombie
     public static String attackZombie(Player player, Zombie zombie) {
-        System.out.println("Zombie: "+zombie.getBehavior());
         Scanner sc = new Scanner(System.in);
         if (player.getHealth() <= 0) { // Check if player is dead
             player.setHealth(0); // Set player's health to 0
