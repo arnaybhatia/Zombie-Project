@@ -47,12 +47,14 @@ public class Player {
     public String use(Supply supply){
         if(supply.isType()){
             health+=50;
+            inventory.remove(supply);
             if(health>maxHealth)
                 health=maxHealth;
             return "You have healed 50 health. Your current health is "+health;
         }
         else{
             attackpwr+=5;
+            inventory.remove(supply);
             return "Your new attack power is "+attackpwr;
         }
     }

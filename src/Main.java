@@ -121,6 +121,19 @@ public class Main {
             }
             else if(input.toLowerCase().equals("u")){
                 System.out.println(player.getInventory());
+                if(player.getInventory().size()==0){
+                    System.out.println("You have nothing in your inventory");
+                }
+                else{
+                System.out.println("Please give the number of what you would like to use. Index starts at 0.");
+                int number=sc.nextInt();
+
+                    try {
+                        System.out.println(player.use(player.getInventory().get(number)));
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Something went wrong. Please make sure it is a valid number.");
+                    }
+                }
             }
             if(row==5 && col==5){
                 System.out.println("YOU WIN!!!!!!!!!");
@@ -146,28 +159,47 @@ public class Main {
         }
     }
 
-    public static String attackZombie(Player player, Zombie zombie){
-        if(player.getSpeed() > zombie.getSpeed()) {
-            zombie.setHealth(zombie.getHealth() - player.getAttackpwr());
-            if (zombie.getHealth() > 0) {
+    public static String attackZombie(Player player, Zombie zombie) {
+        Scanner sc = new Scanner(System.in);
+        if (player.getHealth() <= 0) {
+            player.setHealth(0);
+            return "You died. Zombie has " + zombie.getHealth() + " health left.";
+        } else if (zombie.getHealth() <= 0) {
+            zombie.setHealth(0);
+            return "Zombie died. You have " + player.getHealth() + " health left.";
+        }
+
+        System.out.println("Do you want to attack (a) or dodge (d)?");
+        String action = sc.nextLine().toLowerCase();
+
+        if (action.equals("a")) {
+            System.out.println("The zombie has "+zombie.getHealth()+" health left. You have "+player.getHealth()+" health left.");
+            if (player.getSpeed() > zombie.getSpeed()) {
+                zombie.setHealth(zombie.getHealth() - player.getAttackpwr());
+                if (zombie.getHealth() > 0) {
+                    player.setHealth(player.getHealth() - zombie.getAttack());
+                }
+            } else {
+                player.setHealth(player.getHealth() - zombie.getAttack());
+                if (player.getHealth() > 0) {
+                    zombie.setHealth(zombie.getHealth() - player.getAttackpwr());
+                }
+            }
+        } else if (action.equals("d")) {
+            if (Math.random() < 0.5) {
+                System.out.println("You dodged the zombie's attack!");
+                return attackZombie(player, zombie);
+            } else {
+                System.out.println("Dodge failed. Zombie attacks!");
                 player.setHealth(player.getHealth() - zombie.getAttack());
             }
         } else {
-            player.setHealth(player.getHealth() - zombie.getAttack());
-            if (player.getHealth() > 0) {
-                zombie.setHealth(zombie.getHealth() - player.getAttackpwr());
-            }
-        }
-
-        if(zombie.getHealth() <= 0) {
-            zombie.setHealth(0);
-            return "Zombie died. You have " + player.getHealth() + " health left.";
-        } else if (player.getHealth() <= 0) {
-            player.setHealth(0);
-            return "You died. Zombie has " + zombie.getHealth() + " health left.";
+            System.out.println("Invalid input. Please choose 'a' to attack or 'd' to dodge.");
+            return attackZombie(player, zombie);
         }
 
         return attackZombie(player, zombie);
     }
+
 
 }
